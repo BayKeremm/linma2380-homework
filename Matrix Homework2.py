@@ -1,3 +1,8 @@
 # LINMA2380 Homework 2
+# YOLO
 
-a = 3
+def lol(x) : 
+  return x/2
+
+print(lol(16))
+
