@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt 
 # LINMA2380 Homework 2
 
 def f(x):
@@ -10,13 +11,11 @@ def f(x):
     return 2
 
 class KrylovSolver:
-
   def __init__(self, n, r):
     self.n = n
     self.h = 1/(n-1)
     self.r = r
     self.generate_Ab()
-    self.subspace = [(self.A ** i) @ self.b for i in range(r)]
     self.arnoldi_method()
 
   def generate_Ab(self):
@@ -62,11 +61,30 @@ class KrylovSolver:
         break
     self.Q = Q
     self.H = H
+
+  def solve(self):
+    y = np.linalg.lstsq(self.H, self.Q.T @ self.b, rcond=None)[0]
+    return self.Q @ y
     
     
 
 # Now solve for r = 10,...,50: min_{x in Krylov subspace of r (A,b)} ||Ax-b||
 # Finite difference method: https://www.dam.brown.edu/people/alcyew/handouts/numdiff.pdf
 
-solver = KrylovSolver(101,10)
+n = 101
+rs = [10, 20, 30, 40, 50,70]
 
+plt.figure(figsize=(10, 6))
+
+for r in rs:
+    solver = KrylovSolver(n, r)
+    u = solver.solve() 
+    x = np.linspace(0, 1, n)
+    plt.plot(x, u, label=f'r = {r}')
+
+plt.title('Solution of the 1D Poisson Equation for Different Krylov Subspace Dimensions')
+plt.xlabel('x')
+plt.ylabel('u(x)')
+plt.legend()
+plt.grid(True)
+plt.show()
