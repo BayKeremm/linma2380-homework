@@ -14,7 +14,7 @@ class TestKrylovSolver(unittest.TestCase):
         solver = KrylovSolver(n, r)
         
         # Expected matrix A for n=5
-        expected_A = np.array([[1, 0, 0, 0, 0],
+        expected_A = 1/ solver.h ** 2 * np.array([[1, 0, 0, 0, 0],
                                [1, -2, 1, 0, 0],
                                [0, 1, -2, 1, 0],
                                [0, 0, 1, -2, 1],

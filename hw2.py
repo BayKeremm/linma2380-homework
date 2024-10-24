@@ -38,7 +38,7 @@ class KrylovSolver:
 
       for i in range(1,self.n-1):
         b[i] = f(i*self.h)
-    self.A = A
+    self.A = ( 1/self.h ** 2 ) * A
     self.b = b
 
   def arnoldi_method(self):
