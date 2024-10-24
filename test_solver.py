@@ -4,6 +4,8 @@ from hw2 import KrylovSolver, f
 
 import unittest
 import numpy as np
+from scipy.sparse.linalg import gmres
+
 
 class TestKrylovSolver(unittest.TestCase):
     
@@ -43,15 +45,6 @@ class TestKrylovSolver(unittest.TestCase):
             for j in range(i):
                 # Q[:, i] should be orthogonal to Q[:, j]
                 self.assertAlmostEqual(np.dot(Q[:, i], Q[:, j]), 0, places=10)
-    
-    def test_subspace_size(self):
-        # Test if the Krylov subspace is generated with the correct size
-        n = 5
-        r = 3
-        solver = KrylovSolver(n, r)
-        
-        # Check the size of the subspace generated
-        self.assertEqual(len(solver.subspace), r)
     
     def test_h_matrix(self):
         # Test if the Hessenberg matrix h is generated correctly

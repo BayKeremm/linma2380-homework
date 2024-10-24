@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt 
+from scipy.sparse.linalg import gmres
 # LINMA2380 Homework 2
 
 def f(x):
@@ -72,13 +73,14 @@ class KrylovSolver:
 # Finite difference method: https://www.dam.brown.edu/people/alcyew/handouts/numdiff.pdf
 
 n = 101
-rs = [10, 20, 30, 40, 50,70]
+rs = [10, 20, 30, 40, 50, 70, 100]
 
 plt.figure(figsize=(10, 6))
 
 for r in rs:
     solver = KrylovSolver(n, r)
     u = solver.solve() 
+    #u, _ = gmres(solver.A, solver.b, restart=None, atol=1e-12)  # Use 'atol' for tolerance
     x = np.linspace(0, 1, n)
     plt.plot(x, u, label=f'r = {r}')
 
