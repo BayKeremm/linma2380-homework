@@ -75,7 +75,7 @@ class KrylovSolver:
 
 if __name__ == "__main__":
   n = 101
-  rs = [10, 20, 30, 40, 50, 100 ]
+  rs = [10, 20, 30, 40, 50]
 
   plt.figure(figsize=(10, 6))
 
@@ -87,8 +87,7 @@ if __name__ == "__main__":
       plt.plot(x, u, label=f'r = {r}')
 
   plt.title('Solution of the 1D Poisson Equation for Different Krylov Subspace Dimensions')
-  plt.xlabel('x')
-  plt.ylabel('u(x)')
+  plt.xlabel('Position $x$', fontsize=12)
+  plt.ylabel('Solution $u(x)$', fontsize=12)
   plt.legend()
-  plt.grid(True)
   plt.show()

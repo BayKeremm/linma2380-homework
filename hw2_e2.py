@@ -83,14 +83,14 @@ if __name__=="__main__":
     x = np.linspace(0, 1, n)
 
     #plt.plot(x, u, color='royalblue', linestyle='-', linewidth=2, marker='o', markersize=4, label=r'$u$ (GMRES solution)')
-    plt.plot(x, u_my, color='orangered', linestyle='--', linewidth=2, marker='s', markersize=4, label=r'$u_{\text{my}}$ (Custom Solver)')
+    plt.plot(x, u_my)
 
     plt.title(f'Solution of the 1D Schrödinger Equation for r = {r}\nUsing Krylov Subspace Method', fontsize=14, fontweight='bold')
     plt.xlabel('Position $x$', fontsize=12)
     plt.ylabel('Solution $u(x)$', fontsize=12)
 
     #plt.legend()
-    plt.grid(True, linestyle='--', alpha=0.7)
+    #plt.grid(True, linestyle='--', alpha=0.7)
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)
 
