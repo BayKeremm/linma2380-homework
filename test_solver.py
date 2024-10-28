@@ -1,11 +1,18 @@
 import unittest
 import numpy as np
-from hw2 import KrylovSolver, f
+from hw2 import KrylovSolver
 
 import unittest
 import numpy as np
 from scipy.sparse.linalg import gmres
 
+def f(x):
+    if x <= 0.2:
+        return -1
+    elif x < 0.8:
+        return 5*x-2
+    else:
+        return 2
 
 class TestKrylovSolver(unittest.TestCase):
     

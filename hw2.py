@@ -3,13 +3,6 @@ import matplotlib.pyplot as plt
 from scipy.sparse.linalg import gmres
 # LINMA2380 Homework 2
 
-def f(x):
-  if x <= 0.2:
-    return -1
-  elif x < 0.8:
-    return 5*x-2
-  else:
-    return 2
 
 class KrylovSolver:
   def __init__(self, n, r):
@@ -18,8 +11,16 @@ class KrylovSolver:
     self.r = r
     self.generate_Ab()
     self.arnoldi_method()
+    self.subspace = np.array([(self.A**(r)@self.b).T for i in range(self.r)])
 
   def generate_Ab(self):
+    def f(x):
+      if x <= 0.2:
+        return -1
+      elif x < 0.8:
+        return 5*x-2
+      else:
+        return 2
     A = np.zeros((self.n,self.n))
     A[0,0] = 1
     A[self.n-1,self.n-1] = 1
@@ -38,7 +39,7 @@ class KrylovSolver:
 
       for i in range(1,self.n-1):
         b[i] = f(i*self.h)
-    self.A = ( 1/self.h ** 2 ) * A
+    self.A = ( 1/(self.h ** 2) ) * A
     self.b = b
 
   def arnoldi_method(self):
@@ -72,21 +73,22 @@ class KrylovSolver:
 # Now solve for r = 10,...,50: min_{x in Krylov subspace of r (A,b)} ||Ax-b||
 # Finite difference method: https://www.dam.brown.edu/people/alcyew/handouts/numdiff.pdf
 
-n = 101
-rs = [10, 20, 30, 40, 50, 70, 100]
+if __name__ == "__main__":
+  n = 101
+  rs = [10, 20, 30, 40, 50, 100 ]
 
-plt.figure(figsize=(10, 6))
+  plt.figure(figsize=(10, 6))
 
-for r in rs:
-    solver = KrylovSolver(n, r)
-    u = solver.solve() 
-    #u, _ = gmres(solver.A, solver.b, restart=None, atol=1e-12)  # Use 'atol' for tolerance
-    x = np.linspace(0, 1, n)
-    plt.plot(x, u, label=f'r = {r}')
+  for r in rs:
+      solver = KrylovSolver(n, r)
+      u = solver.solve() 
+      #u, _ = gmres(solver.A, solver.b, restart=None, atol=1e-12)  # Use 'atol' for tolerance
+      x = np.linspace(0, 1, n)
+      plt.plot(x, u, label=f'r = {r}')
 
-plt.title('Solution of the 1D Poisson Equation for Different Krylov Subspace Dimensions')
-plt.xlabel('x')
-plt.ylabel('u(x)')
-plt.legend()
-plt.grid(True)
-plt.show()
+  plt.title('Solution of the 1D Poisson Equation for Different Krylov Subspace Dimensions')
+  plt.xlabel('x')
+  plt.ylabel('u(x)')
+  plt.legend()
+  plt.grid(True)
+  plt.show()
