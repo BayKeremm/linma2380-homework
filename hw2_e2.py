@@ -1,13 +1,18 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy.sparse.linalg import gmres
+
 class KrylovSolver:
   def __init__(self, n, r):
     self.n = n
     self.h = 4/(n-1)
     self.r = r
     self.generate_Ab()
+    self.A = self.A  + np.diag(self.v)
+    self.b = np.array([i for i in range(1,n+1)])
     self.arnoldi_method()
     self.subspace = np.array([(self.A**(r)@self.b).T for i in range(self.r)])
-    print(self.A)
+
 
   def generate_Ab(self):
     def V(x):
@@ -32,13 +37,10 @@ class KrylovSolver:
     
     v = np.zeros(self.n)
 
-    v[0] = 0
-    v[self.n-1] = 0
-
-    for i in range(1,self.n-1):
-        v[i] = V(i*self.h)
+    for i in range(0,self.n):
+        v[i] = V(-2 + i*self.h)
     self.A = ( 1/(self.h ** 2) ) * A
-    self.b = v
+    self.v = v
 
   def arnoldi_method(self):
     # Compute a basis for the (self.r)-Krylov subspace
@@ -65,4 +67,31 @@ class KrylovSolver:
   def solve(self):
     y = np.linalg.lstsq(self.H, self.Q.T @ self.b, rcond=None)[0]
     return self.Q @ y
-    
+
+
+
+
+if __name__=="__main__":
+    n = 101
+    r = 50
+
+    plt.figure(figsize=(10, 6))
+
+    solver = KrylovSolver(n, r)
+    u_my = solver.solve() 
+    u, _ = gmres(solver.A, solver.b, restart=None, atol=1e-12)
+    x = np.linspace(0, 1, n)
+
+    #plt.plot(x, u, color='royalblue', linestyle='-', linewidth=2, marker='o', markersize=4, label=r'$u$ (GMRES solution)')
+    plt.plot(x, u_my, color='orangered', linestyle='--', linewidth=2, marker='s', markersize=4, label=r'$u_{\text{my}}$ (Custom Solver)')
+
+    plt.title(f'Solution of the 1D Schrödinger Equation for r = {r}\nUsing Krylov Subspace Method', fontsize=14, fontweight='bold')
+    plt.xlabel('Position $x$', fontsize=12)
+    plt.ylabel('Solution $u(x)$', fontsize=12)
+
+    #plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+
+    plt.show()
