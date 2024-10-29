@@ -17,11 +17,11 @@ class KrylovSolver:
   def generate_Ab(self):
     def V(x):
       if x <= -1:
-        return 10
+        return 100
       elif x < 1:
         return 0
       else:
-        return 10
+        return 100
     A = np.zeros((self.n,self.n))
     A[0,0] = -2
     A[0,1] = 1
@@ -161,18 +161,17 @@ if __name__=="__main__":
     r = 50
     solver = KrylovSolver(n, r)
     A = solver.A       # A matrix (nxn)
-    H = solver.H       # H matrix (dimension r x r)
     Q = solver.Q       # Q matrix (dimension n x r, orthonormal basis for Kr(A, b))
-
+    H = Q.T @ A @ Q
     # Step 1: Compute eigenvalues and eigenvectors of H
     eigenvalues, eigenvectors = np.linalg.eigh(H)
 
     # Step 2: Sort eigenvalues in descending order and select top 5
-    sorted_indices = np.argsort(eigenvalues)[::-1]
-    top_eigenvectors = eigenvectors[:, sorted_indices[:5]]
+    sorted_indices = np.argsort(eigenvalues)
+    bottom_eigenvectors = eigenvectors[:, sorted_indices[:5]]
 
     # Step 3: Compute the approximate eigenvectors of A using Q and H
-    approx_eigenvectors = Q @ top_eigenvectors  # Shape (n, 5)
+    approx_eigenvectors = Q @ bottom_eigenvectors  # Shape (n, 5)
 
     # Step 4: Plot the top 5 approximate eigenvectors of A
     fig, axes = plt.subplots(5, 1, figsize=(10, 12), sharex=True)
@@ -189,8 +188,8 @@ if __name__=="__main__":
     eigenvalues, eigenvectors = np.linalg.eigh(A)
 
     # Step 2: Sort eigenvalues in descending order and select top 5
-    sorted_indices = np.argsort(eigenvalues)[::-1]
-    top_eigenvectors = eigenvectors[:, sorted_indices[:5]]
+    sorted_indices = np.argsort(eigenvalues)
+    bottom_eigenvectors = eigenvectors[:, sorted_indices[:5]]
 
     # Step 3: Plot the top 5 eigenvectors of A
     fig, axes = plt.subplots(5, 1, figsize=(10, 12), sharex=True)
