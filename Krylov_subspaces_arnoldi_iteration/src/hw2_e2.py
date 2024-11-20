@@ -160,9 +160,10 @@ if __name__=="__main__":
     n = 101
     r = 50
     solver = KrylovSolver(n, r)
-    A = solver.A       # A matrix (nxn)
-    Q = solver.Q       # Q matrix (dimension n x r, orthonormal basis for Kr(A, b))
-    H = Q.T @ A @ Q
+    A = solver.A       # A (nxn)
+    Q = solver.Q       # Q (n x r, orthonormal basis for Kr(A, b))
+    H = Q.T @ A @ Q    # H (r x r)
+
     # Step 1: Compute eigenvalues and eigenvectors of H
     eigenvalues, eigenvectors = np.linalg.eigh(H)
 
