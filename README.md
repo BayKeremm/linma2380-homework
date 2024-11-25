@@ -1,5 +1,6 @@
 # Homework for linma2380: Matrix Computations
 
+## HW2 code
 Given a large matrix $A$, find smaller matrices $Q,H$ such that: $Q^\top AQ = H$
 
 Using Krylov subspaces and Arnoldi iteration.
@@ -9,3 +10,6 @@ Given a matrix $A \in \mathbb{R}^{n\times n}$, and $b \in \mathbb{R}^n$ Arnoldi 
 Where $Q$ has orthonormal columns.
 
 Then eigenvalues and eigenvectors of $H$ can be used to produce good approximated for eigenvalues and eigenvectors of $A$.
+
+## HW4 code
+Solution to the google problem with Power Iteration method
